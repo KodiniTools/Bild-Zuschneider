@@ -17,7 +17,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['vue', 'vue-router', 'pinia'],
+          vendor: ['vue', 'vue-router', 'pinia', 'vue-i18n'],
         },
         // Asset-Namen mit Hash für Cache-Busting
         assetFileNames: 'assets/[name].[hash].[ext]',

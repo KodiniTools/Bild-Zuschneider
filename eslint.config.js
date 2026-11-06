@@ -61,6 +61,13 @@ export default defineConfigWithVueTs(
     rules: { 'no-console': 'off' },
   },
   {
+    // UI-Bausteine (Kopie aus Bildkonverter/Collage Maker): optionale Props sind per
+    // TypeScript optional, ein explizites `undefined`-Default bringt nichts.
+    name: 'app/ui-components',
+    files: ['src/components/ui/**/*.vue'],
+    rules: { 'vue/require-default-prop': 'off' },
+  },
+  {
     // Tests dürfen kleine Host-Komponenten inline definieren
     name: 'app/tests-inline-components',
     files: ['tests/**/*.ts'],

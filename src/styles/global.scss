@@ -1,0 +1,157 @@
+/**
+ * Globale Styles des Bild-Zuschneiders.
+ *
+ * Basis nach dem Design-System v2 (src/design-system/tokens-v2.css, --ds-*), wie im
+ * Collage Maker (src/style.css) und im Bildkonverter (src/styles/global.scss):
+ * flache Flächen, ein 1-px-Rahmen, Gold nur als Aktionsfarbe, Hover ändert nur Farben,
+ * Fokus ist ausschließlich --ds-focus-ring. Keine Legacy-Aliase (Neubau).
+ * Der Block „SSI-Partials“ (Nav, Footer, Cookie-Banner außerhalb von #app) folgt in Schritt 3.
+ */
+
+// ===== SCHRIFT: Supreme in den drei genutzten Gewichten =====
+// font-semibold (600) fällt auf Supreme Bold.
+
+@font-face {
+  font-family: 'Supreme';
+  src: url('@/assets/fonts/Supreme-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Supreme';
+  src: url('@/assets/fonts/Supreme-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Supreme';
+  src: url('@/assets/fonts/Supreme-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+// ===== RESET =====
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// ===== FARBSCHEMA für native Controls (Select-Listen, Scrollbalken) =====
+
+:root {
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+// ===== BODY =====
+
+body {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-lg);
+  line-height: var(--ds-leading);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--ds-surface-0);
+  color: var(--ds-text);
+  transition:
+    background-color var(--ds-duration-slow) var(--ds-ease),
+    color var(--ds-duration-slow) var(--ds-ease);
+}
+
+// ===== TYPOGRAFIE =====
+// page-title 24 · section-title 20 · panel-title 16 (600)
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-tight);
+  margin-bottom: var(--ds-space-4);
+}
+
+h1 {
+  font-size: var(--ds-text-2xl);
+  letter-spacing: var(--ds-tracking-tight);
+}
+
+h2 {
+  font-size: var(--ds-text-xl);
+}
+
+h3,
+h4 {
+  font-size: var(--ds-text-lg);
+  font-weight: var(--ds-weight-semibold);
+  line-height: var(--ds-leading);
+}
+
+p {
+  margin-bottom: var(--ds-space-4);
+}
+
+a {
+  color: var(--ds-link);
+  text-decoration: none;
+  transition: color var(--ds-duration) var(--ds-ease);
+
+  &:hover {
+    color: var(--ds-accent);
+  }
+}
+
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible,
+summary:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+// ===== SCROLLBAR =====
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ds-surface-0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ds-border-strong);
+  border: 3px solid var(--ds-surface-0);
+  border-radius: var(--ds-radius-full);
+
+  &:hover {
+    background: var(--ds-text-3);
+  }
+}
+
+// ===== REDUZIERTE BEWEGUNG =====
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
