@@ -1,18 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { collectPageErrors, prepare, type Locale, type Theme } from './helpers';
 
-/**
- * Alle Routen aus src/router/index.ts mit ihrer H1 je Sprache.
- * Bis zur i18n (Schritt 3) sind die Texte in beiden Sprachen deutsch.
- */
+/** Alle Routen aus src/router/index.ts mit ihrer H1 je Sprache. */
 const PAGES: ReadonlyArray<{ path: string; heading: Record<Locale, string> }> = [
-  { path: './', heading: { de: 'Bild-Zuschneider', en: 'Bild-Zuschneider' } },
-  { path: './guide', heading: { de: 'Anleitung', en: 'Anleitung' } },
-  { path: './faq', heading: { de: 'Häufig gestellte Fragen', en: 'Häufig gestellte Fragen' } },
-  {
-    path: './about',
-    heading: { de: 'Über den Bild-Zuschneider', en: 'Über den Bild-Zuschneider' },
-  },
+  { path: './', heading: { de: 'Bild-Zuschneider', en: 'Image Cropper' } },
+  { path: './guide', heading: { de: 'Anleitung', en: 'Guide' } },
+  { path: './faq', heading: { de: 'Häufig gestellte Fragen', en: 'Frequently Asked Questions' } },
+  { path: './about', heading: { de: 'Über den Bild-Zuschneider', en: 'About Image Cropper' } },
   { path: './gibt-es-nicht', heading: { de: '404', en: '404' } },
 ];
 
@@ -25,11 +19,71 @@ for (const { path, heading } of PAGES) {
         await page.goto(path);
 
         await expect(page.getByRole('heading', { level: 1 })).toHaveText(heading[locale]);
+        await expect(page.locator('html')).toHaveAttribute('lang', locale);
+        await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
         expect(errors).toEqual([]);
       });
     }
   }
 }
+
+test('?lang=en hat Vorrang vor der gespeicherten Sprache', async ({ page }) => {
+  await prepare(page, 'de');
+  await page.goto('./faq?lang=en');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Frequently Asked Questions');
+  await expect(page).toHaveTitle('Frequently Asked Questions (FAQ) – Image Cropper | KodiniTools');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://kodinitools.com/bild-zuschneider/faq?lang=en'
+  );
+});
+
+test('setzt Canonical, hreflang und noindex pro Route', async ({ page }) => {
+  await prepare(page, 'de');
+  await page.goto('./about');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://kodinitools.com/bild-zuschneider/about'
+  );
+  await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute(
+    'href',
+    'https://kodinitools.com/bild-zuschneider/about?lang=en'
+  );
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
+
+  await page.goto('./gibt-es-nicht');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
+});
+
+test('folgt Sprach- und Themewechsel der globalen Navigation', async ({ page }) => {
+  await prepare(page, 'de', 'light');
+  await page.goto('./');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Bild-Zuschneider');
+
+  // nav.html meldet Sprachwechsel per Event und Themewechsel über html[data-theme]
+  await page.evaluate(() => {
+    window.dispatchEvent(new CustomEvent('locale-changed', { detail: { locale: 'en' } }));
+    document.documentElement.setAttribute('data-theme', 'dark');
+  });
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Image Cropper');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page).toHaveTitle(/Image Cropper \| KodiniTools$/);
+  await expect
+    .poll(() =>
+      page.evaluate(() => [localStorage.getItem('locale'), localStorage.getItem('theme')])
+    )
+    .toEqual(['en', 'dark']);
+});
+
+test('Kopfzeile führt zu allen Bereichen und markiert den aktiven', async ({ page }) => {
+  await prepare(page, 'de');
+  await page.goto('./');
+  const nav = page.getByRole('navigation', { name: 'Bereiche des Bild-Zuschneiders' });
+  await nav.getByRole('link', { name: 'FAQ' }).click();
+  await expect(page).toHaveURL(/\/bild-zuschneider\/faq$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Häufig gestellte Fragen');
+  await expect(nav.getByRole('link', { name: 'FAQ' })).toHaveAttribute('aria-current', 'page');
+});
 
 // Lighthouse heading-order: Überschriften springen nie um mehr als eine Ebene
 for (const { path } of PAGES) {

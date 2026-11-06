@@ -105,6 +105,37 @@ describe('Basis-Styles (global.scss)', () => {
   });
 
   it('hat keine Dark-Overrides (Dark liegt auf :root, Light auf data-theme=light)', () => {
-    expect(global).not.toMatch(/data-theme=['"]?dark/);
+    // Einzige Ausnahme (wie im Collage Maker): das Bootstrap-Toggler-Icon der
+    // SSI-Navigation ist ein Hintergrundbild und wird im Dark-Theme invertiert.
+    const overrides = global
+      .split('\n')
+      .filter((line) => /data-theme=['"]?dark/.test(line) && !line.includes('toggler-icon'));
+    expect(overrides).toEqual([]);
+  });
+});
+
+describe('SSI-Partials (global.scss)', () => {
+  const global = read('styles/global.scss');
+
+  it('übernimmt wie der Collage Maker Seitenfläche und Textfarben aus den Tokens', () => {
+    expect(global).toMatch(/background-color: transparent !important/);
+    expect(global).toMatch(
+      /\[class\*='drop'\][\s\S]*?background-color: var\(--ds-surface-1\) !important/
+    );
+    expect(global).toMatch(/color: var\(--ds-text\) !important/);
+    expect(global).toMatch(/color: var\(--ds-link\) !important/);
+    expect(global).toMatch(/color: var\(--ds-accent\) !important/);
+  });
+
+  it('nimmt #overlay-root in jedem Partial-Selektor aus', () => {
+    const selectors = global.match(/body\s*>\s*:not\(#app\)[^,{]*/g) ?? [];
+    expect(selectors.length).toBeGreaterThan(10);
+    for (const selector of selectors) expect(selector).toContain(':not(#overlay-root)');
+  });
+
+  it('hebt #overlay-root über die Navigation (z-index --ds-z-toast)', () => {
+    expect(global).toMatch(
+      /#overlay-root \{\s*position: relative;\s*z-index: var\(--ds-z-toast\);/
+    );
   });
 });

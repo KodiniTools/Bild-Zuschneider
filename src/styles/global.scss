@@ -5,7 +5,6 @@
  * Collage Maker (src/style.css) und im Bildkonverter (src/styles/global.scss):
  * flache Flächen, ein 1-px-Rahmen, Gold nur als Aktionsfarbe, Hover ändert nur Farben,
  * Fokus ist ausschließlich --ds-focus-ring. Keine Legacy-Aliase (Neubau).
- * Der Block „SSI-Partials“ (Nav, Footer, Cookie-Banner außerhalb von #app) folgt in Schritt 3.
  */
 
 // ===== SCHRIFT: Supreme in den drei genutzten Gewichten =====
@@ -68,6 +67,143 @@ body {
   transition:
     background-color var(--ds-duration-slow) var(--ds-ease),
     color var(--ds-duration-slow) var(--ds-ease);
+}
+
+// ===== SSI-PARTIALS (Nav, Footer, Cookie-Banner außerhalb von #app) =====
+// 1:1 aus KodiniTools/Collage-Maker (src/style.css, Stand 145663b). Abweichung wie im
+// Bildkonverter: Jeder Partial-Selektor nimmt zusätzlich #overlay-root aus, das
+// Teleport-Ziel der Vue-Overlays (im Collage Maker #modal-portal innerhalb von #app).
+
+// Teleport-Ziel: eigener Stacking-Context hebt alle Overlays gemeinsam über die
+// globale SSI-Navigation (z-index 100) und deren Dropdowns (200), unter dem
+// Cookie-Banner (10000).
+#overlay-root {
+  position: relative;
+  z-index: var(--ds-z-toast);
+}
+
+// Eigene Hintergründe entfernen, damit die Seitenfläche durchscheint – außer beim
+// Cookie-Banner. Direkte Wrapper (nav, footer): normale Spezifität.
+body
+  > :not(#app):not(#overlay-root):not(script):not(.cookie-banner):not(.cookie-consent):not(
+    [class*='cookie']
+  ) {
+  background-color: transparent !important;
+}
+// Alle inneren Nachfahren: :where() hat Spezifität 0, damit die Restore-Regeln gewinnen
+:where(
+    body
+      > :not(#app):not(#overlay-root):not(script):not(.cookie-banner):not(.cookie-consent):not(
+        [class*='cookie']
+      )
+  )
+  :where(*:not(.cookie-banner):not(.cookie-consent):not([class*='cookie'])) {
+  background-color: transparent !important;
+}
+
+// Dropdowns/Submenüs der SSI-Navigation bekommen wieder eine feste Fläche
+body > :not(#app):not(#overlay-root):not(script) [class*='drop'],
+body > :not(#app):not(#overlay-root):not(script) [class*='sub-menu'],
+body > :not(#app):not(#overlay-root):not(script) [class*='submenu'],
+body > :not(#app):not(#overlay-root):not(script) [class*='popup'],
+body > :not(#app):not(#overlay-root):not(script) [class*='popover'],
+body > :not(#app):not(#overlay-root):not(script) [class*='megamenu'] {
+  background-color: var(--ds-surface-1) !important;
+}
+
+// ── Hamburger / Toggle-Menü in der SSI-Navigation ──
+// 1. Leere Spans sind dekorative Elemente (Hamburger-Balken via background-color)
+body > :not(#app):not(#overlay-root):not(script) span:empty {
+  background-color: currentColor !important;
+  border-color: currentColor !important;
+}
+// 2. Spans in aria-expanded-Toggles (Hamburger-Buttons nutzen dieses Attribut)
+body > :not(#app):not(#overlay-root):not(script) [aria-expanded] > span:empty,
+body > :not(#app):not(#overlay-root):not(script) [aria-expanded] > span > span:empty,
+body > :not(#app):not(#overlay-root):not(script) [aria-expanded] > div > span:empty {
+  background-color: currentColor !important;
+  border-color: currentColor !important;
+}
+// 3. SVG-Hamburger-Icons in Buttons / Toggles – stroke & fill erzwingen
+body > :not(#app):not(#overlay-root):not(script) button svg line,
+body > :not(#app):not(#overlay-root):not(script) button svg path,
+body > :not(#app):not(#overlay-root):not(script) button svg rect,
+body > :not(#app):not(#overlay-root):not(script) [aria-expanded] svg line,
+body > :not(#app):not(#overlay-root):not(script) [aria-expanded] svg path,
+body > :not(#app):not(#overlay-root):not(script) [aria-expanded] svg rect,
+body > :not(#app):not(#overlay-root):not(script) [role='button'] svg line,
+body > :not(#app):not(#overlay-root):not(script) [role='button'] svg path,
+body > :not(#app):not(#overlay-root):not(script) [role='button'] svg rect {
+  stroke: currentColor !important;
+  fill: currentColor !important;
+}
+// 4. Bootstrap toggler-icon (background-image SVG) – Kontrast per CSS-Filter
+body > :not(#app):not(#overlay-root):not(script) [class*='toggler-icon'] {
+  filter: brightness(0) saturate(100%) !important;
+}
+:root[data-theme='dark'] body > :not(#app):not(#overlay-root):not(script) [class*='toggler-icon'] {
+  filter: brightness(0) saturate(100%) invert(1) !important;
+}
+
+// Cookie Banner: immer im Vordergrund, über Nav und Dropdowns
+.cookie-banner,
+.cookie-consent,
+[class*='cookie-banner'],
+[class*='cookie-consent'],
+[id*='cookie-banner'],
+[id*='cookie-consent'] {
+  z-index: 10000 !important;
+  position: fixed !important;
+}
+
+// Textfarben der SSI-Partials aus den Tokens; die Variablen wechseln mit dem
+// Theme, deshalb gibt es keine Dark-Varianten. Cookie-Banner ausgenommen.
+body
+  > :not(#app):not(#overlay-root):not(script):not(.cookie-banner):not(.cookie-consent):not(
+    [class*='cookie']
+  ):not([id*='cookie']),
+body
+  > :not(#app):not(#overlay-root):not(script):not(.cookie-banner):not(.cookie-consent):not(
+    [class*='cookie']
+  ):not([id*='cookie'])
+  *:not([class*='cookie']):not([id*='cookie']) {
+  color: var(--ds-text) !important;
+}
+body
+  > :not(#app):not(#overlay-root):not(script):not(.cookie-banner):not(.cookie-consent):not(
+    [class*='cookie']
+  ):not([id*='cookie'])
+  a:not([class*='cookie']):not([id*='cookie']),
+body
+  > :not(#app):not(#overlay-root):not(script):not(.cookie-banner):not(.cookie-consent):not(
+    [class*='cookie']
+  ):not([id*='cookie'])
+  a:not([class*='cookie']):not([id*='cookie'])
+  * {
+  color: var(--ds-link) !important;
+}
+body
+  > :not(#app):not(#overlay-root):not(script):not(.cookie-banner):not(.cookie-consent):not(
+    [class*='cookie']
+  ):not([id*='cookie'])
+  a:hover:not([class*='cookie']):not([id*='cookie']),
+body
+  > :not(#app):not(#overlay-root):not(script):not(.cookie-banner):not(.cookie-consent):not(
+    [class*='cookie']
+  ):not([id*='cookie'])
+  a:hover:not([class*='cookie']):not([id*='cookie'])
+  * {
+  color: var(--ds-accent) !important;
+}
+
+// ===== TOUCH =====
+// Kein grauer Tap-Highlight, keine 300-ms-Klickverzögerung auf Bedienelementen
+// (Range-Regeln liegen ausschließlich in components/ui/range.css).
+#app button,
+#app [role='button'],
+#app select {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 // ===== TYPOGRAFIE =====
