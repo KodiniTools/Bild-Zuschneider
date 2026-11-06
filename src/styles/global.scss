@@ -236,6 +236,14 @@ h4 {
   line-height: var(--ds-leading);
 }
 
+// Panel-Titel (README: panel-title 16/600), als h2 in Seitenleisten
+.panel-title {
+  margin: 0;
+  font-size: var(--ds-text-lg);
+  font-weight: var(--ds-weight-semibold);
+  line-height: var(--ds-leading);
+}
+
 p {
   margin-bottom: var(--ds-space-4);
 }

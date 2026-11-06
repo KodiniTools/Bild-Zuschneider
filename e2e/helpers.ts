@@ -1,3 +1,4 @@
+import { crc32, deflateSync } from 'node:zlib';
 import type { Page } from '@playwright/test';
 
 export type Locale = 'de' | 'en';
@@ -34,4 +35,52 @@ export function collectPageErrors(page: Page): string[] {
     errors.push(`console: ${message.text()} (${url})`);
   });
   return errors;
+}
+
+function chunk(type: string, data: Buffer): Buffer {
+  const length = Buffer.alloc(4);
+  length.writeUInt32BE(data.length);
+  const body = Buffer.concat([Buffer.from(type, 'ascii'), data]);
+  const crc = Buffer.alloc(4);
+  crc.writeUInt32BE(crc32(body));
+  return Buffer.concat([length, body, crc]);
+}
+
+/**
+ * Gültige RGB-PNG-Datei mit Farbmuster (Kopie aus dem Bildkonverter).
+ */
+export function png(width: number, height: number, range?: [number, number]): Buffer {
+  const rows: Buffer[] = [];
+  for (let y = 0; y < height; y++) {
+    const row = Buffer.alloc(1 + width * 3);
+    for (let x = 0; x < width; x++) {
+      const rgb = [(x * 7 + y * 13) % 256, (x * x + y * 3) % 256, (x * y) % 256];
+      // optional in einen engeren Tonwertbereich stauchen (flaues Bild)
+      row.set(
+        range ? rgb.map((v) => Math.round(range[0] + (v * (range[1] - range[0])) / 255)) : rgb,
+        1 + x * 3
+      );
+    }
+    rows.push(row);
+  }
+  const header = Buffer.alloc(13);
+  header.writeUInt32BE(width, 0);
+  header.writeUInt32BE(height, 4);
+  header[8] = 8; // Bittiefe
+  header[9] = 2; // Farbtyp RGB
+  return Buffer.concat([
+    Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    chunk('IHDR', header),
+    chunk('IDAT', deflateSync(Buffer.concat(rows))),
+    chunk('IEND', Buffer.alloc(0)),
+  ]);
+}
+
+export function imageFile(name: string, width = 120, height = 80, range?: [number, number]) {
+  return { name, mimeType: 'image/png', buffer: png(width, height, range) };
+}
+
+/** Lädt ein Bild über das (versteckte) Datei-Input der Seite. */
+export async function uploadImage(page: Page, file: ReturnType<typeof imageFile>) {
+  await page.locator('input[type="file"]').setInputFiles(file);
 }

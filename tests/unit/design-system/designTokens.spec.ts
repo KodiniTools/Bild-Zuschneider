@@ -32,11 +32,16 @@ const ALLOWED_GRADIENTS = new Set([
   // Farbton- und Temperatur-Regler zeigen ihren Wertebereich als Verlauf
   'components/ui/SliderField.vue: linear-gradient( to right, hsl(0, 100%, 50%), hsl(60, 100%, 50%), hsl(120, 100%,',
   'components/ui/SliderField.vue: linear-gradient( 90deg, var(--ds-info) 0%, var(--ds-border-strong) 50%, var(--ds',
+  // Schachbrett hinter dem Bild zeigt Transparenz (README: erlaubt)
+  'components/cropper/CropStage.vue: repeating-conic-gradient(var(--ds-border-strong) 0% 25%, var(--ds-surface-1) 0% ',
 ]);
 const ALLOWED_FONT_SIZES = new Set<string>([]);
 const ALLOWED_FONT_FAMILIES = new Set<string>([]);
 const ALLOWED_RADII = new Set<string>([]);
-const ALLOWED_SHADOWS = new Set<string>([]);
+const ALLOWED_SHADOWS = new Set([
+  // Zuschneiden: dunkelt alles außerhalb des Ausschnitts ab (Backdrop-Wert laut README)
+  'components/cropper/CropOverlay.vue: box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5)',
+]);
 const ALLOWED_Z_INDEX = new Set([
   // SSI-Block 1:1 aus dem Collage Maker: Cookie-Banner liegt über Nav (100) und Overlays (9999)
   'styles/global.scss: z-index: 10000',
