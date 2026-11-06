@@ -1,0 +1,54 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node modules
+node_modules
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Testing
+coverage
+.nyc_output
+
+# Build outputs
+build
+out
+
+# Cache
+.cache
+.parcel-cache
+.eslintcache
+
+# OS
+Thumbs.db
+dist
+.claude/
+
+# Playwright
+playwright-report/
+test-results/
+
+# Lokale Playwright-Config (nicht committen)
+playwright.local.config.ts
