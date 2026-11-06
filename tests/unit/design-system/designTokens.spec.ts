@@ -37,7 +37,10 @@ const ALLOWED_FONT_SIZES = new Set<string>([]);
 const ALLOWED_FONT_FAMILIES = new Set<string>([]);
 const ALLOWED_RADII = new Set<string>([]);
 const ALLOWED_SHADOWS = new Set<string>([]);
-const ALLOWED_Z_INDEX = new Set<string>([]);
+const ALLOWED_Z_INDEX = new Set([
+  // SSI-Block 1:1 aus dem Collage Maker: Cookie-Banner liegt über Nav (100) und Overlays (9999)
+  'styles/global.scss: z-index: 10000',
+]);
 
 function collect(dir: string, out: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {

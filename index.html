@@ -9,15 +9,45 @@
     />
     <meta name="author" content="KodiniTools" />
     <meta name="robots" content="index, follow" />
-    <!-- Canonical & hreflang: bewusst nicht statisch gesetzt; folgt pro Route (Schritt 3). -->
+    <meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a1324" media="(prefers-color-scheme: dark)" />
+
+    <!-- Canonical & hreflang: bewusst NICHT statisch gesetzt. Die SPA liefert für jede
+         Route dieselbe index.html aus; src/composables/useSeoMeta.ts setzt beides pro Route. -->
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kodinitools.com/bild-zuschneider/" />
+    <meta
+      property="og:title"
+      content="Bild-Zuschneider – Bilder online zuschneiden | KodiniTools"
+    />
+    <meta
+      property="og:description"
+      content="Bilder direkt im Browser zuschneiden, drehen und spiegeln. Kostenlos, ohne Upload."
+    />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:site_name" content="KodiniTools" />
+
+    <!-- Theme vor dem ersten Paint setzen (Tokens: Dark auf :root, Light über data-theme),
+         damit Light-Nutzer keinen dunklen Flash sehen. Der Settings-Store übernimmt danach. -->
+    <script>
+      try {
+        document.documentElement.setAttribute(
+          'data-theme',
+          localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+        );
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    </script>
     <link rel="icon" href="/favicon.ico" />
     <title>Bild-Zuschneider – Bilder online zuschneiden | KodiniTools</title>
   </head>
   <body>
-    <!-- Externe/Globale Navigation -->
-    <div class="external-nav-wrapper">
-      <!--#include virtual="/partials/nav.html" -->
-    </div>
+    <!-- Globale Navigation (SSI, außerhalb von #app; Styles: Block „SSI-Partials“ in global.scss) -->
+    <!--#include virtual="/partials/nav.html" -->
 
     <div id="app"></div>
     <!-- Ziel für Vue-Teleports (Modals, Dialoge, Toasts); von den SSI-Partial-Regeln ausgenommen -->
