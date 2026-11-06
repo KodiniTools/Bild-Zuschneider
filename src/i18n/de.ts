@@ -88,6 +88,20 @@ export default {
     grid: 'Drittel-Raster anzeigen',
     reset: 'Rahmen zurücksetzen',
   },
+  transform: {
+    title: 'Drehen und Spiegeln',
+    rotateLeft: 'Um 90° nach links drehen',
+    rotateRight: 'Um 90° nach rechts drehen',
+    flipHorizontal: 'Waagerecht spiegeln',
+    flipVertical: 'Senkrecht spiegeln',
+    straighten: 'Begradigen',
+    straightenHint: 'Der Rahmen bleibt im Bild und wird bei Bedarf kleiner.',
+    reset: 'Drehen zurücksetzen',
+  },
+  history: {
+    toolbar: 'Verlauf',
+    ctrl: 'Strg',
+  },
   common: {
     cancel: 'Abbrechen',
     close: 'Schließen',

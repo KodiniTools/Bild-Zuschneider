@@ -1,6 +1,7 @@
 <template>
   <aside class="crop-sidebar">
     <AspectPanel class="crop-sidebar__panel" />
+    <TransformPanel class="crop-sidebar__panel" />
     <CropSizePanel class="crop-sidebar__panel" />
   </aside>
 </template>
@@ -8,8 +9,9 @@
 <script setup lang="ts">
 import AspectPanel from './AspectPanel.vue';
 import CropSizePanel from './CropSizePanel.vue';
+import TransformPanel from './TransformPanel.vue';
 
-/** Seitenleiste des Werkzeugs; Transform (Schritt 5) und Export (Schritt 6) folgen hier. */
+/** Seitenleiste des Werkzeugs; der Export (Schritt 6) folgt hier. */
 </script>
 
 <style scoped lang="scss">

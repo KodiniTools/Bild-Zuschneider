@@ -58,7 +58,7 @@ const props = defineProps<{
   showGrid: boolean;
 }>();
 
-const emit = defineEmits<{ change: [rect: Rect] }>();
+const emit = defineEmits<{ change: [rect: Rect]; commit: [] }>();
 
 const { t } = useI18n();
 const hintId = useId();
@@ -72,6 +72,7 @@ const { dragging, onPointerDown, onPointerMove, onPointerUp, onKeyDown } = useCr
   scale: toRef(props, 'scale'),
   surface,
   onChange: (rect) => emit('change', rect),
+  onCommit: () => emit('commit'),
 });
 
 const px = (value: number) => `${value * props.scale}px`;

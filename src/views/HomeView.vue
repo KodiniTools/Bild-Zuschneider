@@ -21,7 +21,10 @@
     />
 
     <div v-if="editor.hasImage" class="home__workspace">
-      <CropStage class="home__stage" />
+      <div class="home__stage">
+        <StageToolbar />
+        <CropStage />
+      </div>
       <CropSidebar class="home__sidebar" />
     </div>
   </section>
@@ -34,11 +37,13 @@ import { AppIcon, UiButton } from '@/components/ui';
 import CropSidebar from '@/components/cropper/CropSidebar.vue';
 import CropStage from '@/components/cropper/CropStage.vue';
 import ImageDropzone from '@/components/cropper/ImageDropzone.vue';
+import StageToolbar from '@/components/cropper/StageToolbar.vue';
 import LoadErrorCallout from '@/components/cropper/LoadErrorCallout.vue';
 import { useEditorStore } from '@/stores/editor';
 
 /**
- * Werkzeug auf `/` (Entscheidung Schritt 0): Bild laden, Rahmen setzen. Die
+ * Werkzeug auf `/` (Entscheidung Schritt 0): Bild laden, Rahmen setzen, drehen;
+ * Tastenkürzel für den Verlauf. Die
  * Ablagefläche bleibt eingebunden (v-show), damit „Anderes Bild“ ihr Datei-Input nutzt.
  */
 const { t } = useI18n();
@@ -55,8 +60,26 @@ function onPaste(event: ClipboardEvent) {
   void editor.loadFile(file);
 }
 
-onMounted(() => window.addEventListener('paste', onPaste));
-onBeforeUnmount(() => window.removeEventListener('paste', onPaste));
+/** Rückgängig: Strg/⌘+Z; Wiederholen: Strg/⌘+Umschalt+Z oder Strg+Y. Nicht in Feldern. */
+function onKeyDown(event: KeyboardEvent) {
+  if (!editor.hasImage || !(event.ctrlKey || event.metaKey) || event.altKey) return;
+  const target = event.target as HTMLElement | null;
+  if (target?.closest('input, textarea, select, [contenteditable="true"]')) return;
+  const key = event.key.toLowerCase();
+  if (key === 'z' && !event.shiftKey) editor.undo();
+  else if ((key === 'z' && event.shiftKey) || key === 'y') editor.redo();
+  else return;
+  event.preventDefault();
+}
+
+onMounted(() => {
+  window.addEventListener('paste', onPaste);
+  window.addEventListener('keydown', onKeyDown);
+});
+onBeforeUnmount(() => {
+  window.removeEventListener('paste', onPaste);
+  window.removeEventListener('keydown', onKeyDown);
+});
 </script>
 
 <style scoped lang="scss">
@@ -71,6 +94,10 @@ onBeforeUnmount(() => window.removeEventListener('paste', onPaste));
 
 .home__error {
   margin-bottom: var(--ds-space-4);
+}
+
+.home__stage {
+  min-width: 0;
 }
 
 .home__workspace {

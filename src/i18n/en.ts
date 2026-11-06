@@ -90,6 +90,20 @@ const en: typeof de = {
     grid: 'Show rule-of-thirds grid',
     reset: 'Reset frame',
   },
+  transform: {
+    title: 'Rotate and flip',
+    rotateLeft: 'Rotate 90° left',
+    rotateRight: 'Rotate 90° right',
+    flipHorizontal: 'Flip horizontally',
+    flipVertical: 'Flip vertically',
+    straighten: 'Straighten',
+    straightenHint: 'The frame stays inside the image and shrinks if needed.',
+    reset: 'Reset rotation',
+  },
+  history: {
+    toolbar: 'History',
+    ctrl: 'Ctrl',
+  },
   common: {
     cancel: 'Cancel',
     close: 'Close',

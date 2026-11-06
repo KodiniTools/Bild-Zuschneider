@@ -4,11 +4,12 @@
       <canvas ref="canvas" class="crop-stage__canvas" data-testid="crop-canvas" />
       <CropOverlay
         :crop="editor.crop"
-        :bounds="editor.imageSize"
+        :bounds="editor.workSize"
         :ratio="editor.ratio"
         :scale="scale"
         :show-grid="editor.showGrid"
         @change="editor.setCrop"
+        @commit="editor.commit"
       />
     </div>
   </div>
@@ -19,21 +20,23 @@ import { computed, nextTick, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useEditorStore } from '@/stores/editor';
 import { useStageFit } from '@/composables/cropper/useStageFit';
+import { drawTransformed } from '@/lib/transform';
 import CropOverlay from './CropOverlay.vue';
 
 /**
- * Bühne: zeigt das Bild eingepasst auf einem Canvas (Gerätepixel-genau) und legt
- * den Zuschnittrahmen darüber. Gezeichnet wird nur bei neuem Bild oder neuer Größe.
+ * Bühne: zeigt das gedrehte/gespiegelte/begradigte Bild eingepasst auf einem Canvas
+ * (Gerätepixel-genau) und legt den Zuschnittrahmen darüber. Gezeichnet wird nur bei
+ * neuem Bild, neuer Transformation oder neuer Größe – nicht beim Ziehen des Rahmens.
  */
 const { t } = useI18n();
 const editor = useEditorStore();
 const container = ref<HTMLElement | null>(null);
 const canvas = ref<HTMLCanvasElement | null>(null);
-const { scale } = useStageFit(container, toRef(editor, 'imageSize'));
+const { scale } = useStageFit(container, toRef(editor, 'workSize'));
 
 const displaySize = computed(() => ({
-  width: Math.round(editor.imageSize.width * scale.value),
-  height: Math.round(editor.imageSize.height * scale.value),
+  width: Math.round(editor.workSize.width * scale.value),
+  height: Math.round(editor.workSize.height * scale.value),
 }));
 
 const surfaceStyle = computed(() => ({
@@ -52,11 +55,11 @@ function draw() {
   if (!ctx) return;
   ctx.imageSmoothingQuality = 'high';
   ctx.clearRect(0, 0, el.width, el.height);
-  ctx.drawImage(source, 0, 0, el.width, el.height);
+  drawTransformed(ctx, source, editor.transform, { scale: el.width / editor.workSize.width });
 }
 
 watch(
-  [() => editor.image, displaySize],
+  [() => editor.image, () => editor.transform, displaySize],
   async () => {
     await nextTick(); // Canvas existiert erst, wenn scale > 0
     draw();
