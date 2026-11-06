@@ -20,6 +20,8 @@ export interface CropInteractionOptions {
   /** Fläche, auf die sich Zeigerkoordinaten beziehen (Overlay = Bildfläche) */
   surface: Ref<HTMLElement | null>;
   onChange: (rect: Rect) => void;
+  /** Ende einer Änderung (Loslassen, Tastendruck) – für den Verlauf */
+  onCommit?: () => void;
 }
 
 interface DragState {
@@ -44,9 +46,10 @@ export function keyboardStep(bounds: Size, large: boolean): number {
  * überlässt die Geometrie `src/lib/geometry.ts`.
  */
 export function useCropInteraction(options: CropInteractionOptions) {
-  const { crop, bounds, ratio, scale, surface, onChange } = options;
+  const { crop, bounds, ratio, scale, surface, onChange, onCommit } = options;
   const dragging = ref<DragMode | null>(null);
   let drag: DragState | null = null;
+  let changed = false;
 
   function toImagePoint(event: PointerEvent) {
     const rect = surface.value?.getBoundingClientRect();
@@ -82,13 +85,17 @@ export function useCropInteraction(options: CropInteractionOptions) {
       origin: mode === 'create' ? toImagePoint(event) : { x: 0, y: 0 },
     };
     dragging.value = mode;
+    changed = false;
   }
 
   function onPointerMove(event: PointerEvent) {
     if (!drag || event.pointerId !== drag.pointerId) return;
     const next = rectFor(event);
     // Beim Aufziehen erst übernehmen, wenn der Rahmen brauchbar groß ist
-    if (drag.mode !== 'create' || isUsableRect(next)) onChange(next);
+    if (drag.mode !== 'create' || isUsableRect(next)) {
+      onChange(next);
+      changed = true;
+    }
   }
 
   function onPointerUp(event: PointerEvent) {
@@ -96,6 +103,8 @@ export function useCropInteraction(options: CropInteractionOptions) {
     (event.currentTarget as HTMLElement | null)?.releasePointerCapture?.(event.pointerId);
     drag = null;
     dragging.value = null;
+    if (changed) onCommit?.();
+    changed = false;
   }
 
   /**
@@ -119,6 +128,7 @@ export function useCropInteraction(options: CropInteractionOptions) {
     } else {
       onChange(moveRect(crop.value, dx, dy, bounds.value));
     }
+    onCommit?.();
     return true;
   }
 
