@@ -220,7 +220,7 @@ if [ "$(id -u)" -eq 0 ]; then
   if [ "$RELOAD_NGINX" = "1" ] && command -v nginx >/dev/null 2>&1; then
     step "Lade nginx neu"
     if nginx -t >/dev/null 2>&1; then
-      systemctl reload nginx && ok "nginx neu geladen"
+      { systemctl reload nginx 2>/dev/null || nginx -s reload; } && ok "nginx neu geladen"
     else
       warn "nginx -t meldet Fehler – Reload übersprungen:"
       nginx -t 2>&1 | sed 's/^/    /'
