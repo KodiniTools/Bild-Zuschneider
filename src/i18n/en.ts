@@ -24,6 +24,133 @@ const en: typeof de = {
       back: 'Go to Image Cropper',
     },
   },
+  content: {
+    home: {
+      title: 'Crop images online – free and private',
+      intro:
+        'Image Cropper crops photos, graphics and screenshots right in your browser. Your image never leaves your device: no upload, no account and no watermark.',
+      featuresTitle: 'What Image Cropper can do',
+      features: {
+        ratios: 'Fixed aspect ratios such as 1:1, 4:3, 16:9 and 21:9, in portrait or landscape',
+        social:
+          'Ready-made formats for Instagram, YouTube, LinkedIn, Facebook and X with matching output size',
+        exact: 'Exact size and position in pixels, plus a rule-of-thirds grid for composition',
+        rotate: 'Rotate in 90° steps, flip and straighten tilted horizons',
+        formats: 'Save as JPG, PNG, WebP or AVIF with adjustable quality',
+        privacy: 'Metadata such as location and camera are removed when saving',
+      },
+      moreTitle: 'Learn more',
+      more: 'The {guide} explains every step, the {faq} answers questions about formats and privacy.',
+      guideLink: 'guide',
+      faqLink: 'FAQ',
+    },
+    guide: {
+      intro:
+        'Five steps from the original image to the finished crop. Everything runs locally in your browser.',
+      steps: {
+        load: {
+          title: 'Load an image',
+          text: 'Drag an image onto the drop area, choose a file or paste an image with Ctrl+V. Supported formats are JPG, PNG, WebP, AVIF, GIF, BMP, ICO and SVG.',
+        },
+        ratio: {
+          title: 'Choose an aspect ratio',
+          text: 'Choose “Free” for any crop or a fixed ratio. “Portrait” and “Landscape” switch the orientation. Social media formats also set the matching output size.',
+        },
+        frame: {
+          title: 'Adjust the frame',
+          text: 'Move the frame with your mouse or finger, drag its handles or draw a new frame on the image. Under “Size and position” you can enter exact pixel values.',
+        },
+        rotate: {
+          title: 'Rotate and straighten',
+          text: 'Rotate the image in 90° steps, flip it or straighten it with the slider. The frame always stays inside the image.',
+        },
+        export: {
+          title: 'Save',
+          text: 'Choose the file format, quality and, if needed, your own output size. “Download” saves the crop to your device.',
+        },
+      },
+      keysTitle: 'Keyboard shortcuts',
+      keysIntro: 'Click into the frame first or select it with the Tab key.',
+      keys: {
+        move: { keys: 'Arrow keys', action: 'Move the frame by 1 % of the image size' },
+        resize: { keys: 'Shift + arrow keys', action: 'Enlarge or shrink the frame' },
+        fine: { keys: 'Alt + arrow keys', action: 'Work in 1-pixel steps' },
+        coarse: { keys: 'Ctrl + arrow keys', action: 'Work in 10 % steps' },
+        undo: { keys: 'Ctrl + Z', action: 'Undo' },
+        redo: { keys: 'Ctrl + Shift + Z', action: 'Redo' },
+        paste: { keys: 'Ctrl + V', action: 'Load an image from the clipboard' },
+      },
+      keyColumn: 'Keys',
+      actionColumn: 'Action',
+    },
+    faq: {
+      intro: 'Answers to the most common questions about Image Cropper.',
+      items: {
+        upload: {
+          question: 'Is my image uploaded?',
+          answer:
+            'No. The image is processed only in your browser and never sent to a server. Once you close the page, it is no longer in memory.',
+        },
+        formats: {
+          question: 'Which image formats are supported?',
+          answer:
+            'You can load JPG, PNG, WebP, AVIF, GIF, BMP, ICO and SVG. You can save as JPG, PNG, WebP and – if your browser supports it – AVIF.',
+        },
+        heic: {
+          question: 'Why can’t I open HEIC or TIFF images?',
+          answer:
+            'Browsers cannot display these formats themselves. Convert the image first, for example with the KodiniTools Image Converter, and then crop it here.',
+        },
+        quality: {
+          question: 'Does cropping reduce image quality?',
+          answer:
+            'The crop is created at full resolution. With PNG it stays lossless. For JPG, WebP and AVIF you set the quality with the slider; 90 % and above is hard to tell apart from the original.',
+        },
+        metadata: {
+          question: 'Are location and camera data kept?',
+          answer:
+            'No. Saving creates a new file without metadata. Location, capture time and camera model are no longer included. The orientation from the camera data is applied when loading.',
+        },
+        social: {
+          question: 'What size do I need for Instagram, YouTube and others?',
+          answer:
+            'Choose the platform under “Social media format”. Image Cropper sets the matching aspect ratio and the recommended output size, such as 1080 × 1350 pixels for Instagram posts or 1280 × 720 pixels for YouTube thumbnails.',
+        },
+        straighten: {
+          question: 'Why does the frame shrink when straightening?',
+          answer:
+            'A rotated image has slanted edges. To keep empty corners out of the crop, Image Cropper shrinks the frame automatically. Turn back to 0° and it returns to its previous size.',
+        },
+        size: {
+          question: 'How large can an image be?',
+          answer:
+            'Files up to 100 MB and images up to about 268 megapixels. The browser sets this limit; very large images may hit the device’s memory earlier.',
+        },
+        gif: {
+          question: 'Do animated GIFs work?',
+          answer: 'Image Cropper edits single images. For animated GIFs, the first frame is used.',
+        },
+        mobile: {
+          question: 'Can I use Image Cropper on my smartphone?',
+          answer:
+            'Yes. The frame and handles work with your finger, and the image is saved directly on your device.',
+        },
+      },
+    },
+    about: {
+      intro:
+        'Image Cropper is a free tool by KodiniTools, a collection of privacy-friendly image and audio tools.',
+      privacyTitle: 'Privacy',
+      privacy:
+        'All processing happens in your browser. No images are uploaded, stored or analysed. Only your settings for language, colour scheme and recently used colours are saved – locally on your device.',
+      techTitle: 'Technology',
+      tech: 'The image is decoded with the browser’s built-in image functions and cropped at full resolution on a canvas. That is why Image Cropper works without installation and without a server.',
+      moreTitle: 'More tools',
+      more: 'Convert, compress and edit images with the {converter}; edit several images at once with {batch}.',
+      converterLink: 'Image Converter',
+      batchLink: 'Batch Image Editor',
+    },
+  },
   load: {
     title: 'Drop an image here',
     text: 'or choose a file – pasting with Ctrl+V works too. JPG, PNG, WebP, AVIF, GIF, BMP, ICO and SVG.',

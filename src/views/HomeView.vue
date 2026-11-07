@@ -27,6 +27,8 @@
       </div>
       <CropSidebar class="home__sidebar" />
     </div>
+
+    <HomeSeoText />
   </section>
 </template>
 
@@ -34,6 +36,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AppIcon, UiButton } from '@/components/ui';
+import HomeSeoText from '@/components/content/HomeSeoText.vue';
 import CropSidebar from '@/components/cropper/CropSidebar.vue';
 import CropStage from '@/components/cropper/CropStage.vue';
 import ImageDropzone from '@/components/cropper/ImageDropzone.vue';
