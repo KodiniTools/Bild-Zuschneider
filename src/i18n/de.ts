@@ -250,6 +250,9 @@ export default {
       formatUnsupported: 'Dieser Browser kann das gewählte Format nicht erstellen.',
     },
   },
+  sidebar: {
+    label: 'Einstellungen',
+  },
   history: {
     toolbar: 'Verlauf',
     ctrl: 'Strg',
