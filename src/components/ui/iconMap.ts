@@ -8,6 +8,7 @@
 import type { Component } from 'vue';
 import {
   Check,
+  ChevronDown,
   CircleAlert,
   CircleHelp,
   Crop,
@@ -36,6 +37,7 @@ import {
 
 export const iconMap = {
   check: Check,
+  'chevron-down': ChevronDown,
   'circle-alert': CircleAlert,
   'circle-help': CircleHelp,
   crop: Crop,

@@ -30,6 +30,37 @@
     <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:site_name" content="KodiniTools" />
 
+    <!-- Strukturierte Daten (statisch, auch für Crawler ohne JavaScript);
+         FAQPage setzt nur die FAQ-Seite selbst (src/views/FaqView.vue). -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Bild-Zuschneider",
+        "alternateName": "Image Cropper",
+        "url": "https://kodinitools.com/bild-zuschneider/",
+        "description": "Bilder kostenlos im Browser zuschneiden: feste Seitenverhältnisse, Social-Media-Formate, exakte Pixelmaße, Drehen, Spiegeln und Begradigen. Lokal verarbeitet, ohne Upload.",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web Browser",
+        "inLanguage": ["de", "en"],
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "featureList": [
+          "Bilder zuschneiden mit festen Seitenverhältnissen (1:1, 4:3, 16:9, 21:9)",
+          "Social-Media-Formate für Instagram, YouTube, LinkedIn, Facebook und X",
+          "Exakte Pixelmaße und Drittel-Raster",
+          "Drehen, Spiegeln und Begradigen",
+          "Export als JPG, PNG, WebP und AVIF",
+          "Lokale Verarbeitung im Browser, Metadaten werden entfernt"
+        ],
+        "publisher": {
+          "@type": "Organization",
+          "name": "KodiniTools",
+          "url": "https://kodinitools.com/"
+        }
+      }
+    </script>
+
     <!-- Theme vor dem ersten Paint setzen (Tokens: Dark auf :root, Light über data-theme),
          damit Light-Nutzer keinen dunklen Flash sehen. Der Settings-Store übernimmt danach. -->
     <script>

@@ -22,6 +22,134 @@ export default {
       back: 'Zum Bild-Zuschneider',
     },
   },
+  content: {
+    home: {
+      title: 'Bilder online zuschneiden – kostenlos und privat',
+      intro:
+        'Der Bild-Zuschneider schneidet Fotos, Grafiken und Screenshots direkt im Browser zu. Ihr Bild verlässt dabei nie Ihr Gerät: Es gibt keinen Upload, kein Konto und kein Wasserzeichen.',
+      featuresTitle: 'Was der Bild-Zuschneider kann',
+      features: {
+        ratios: 'Feste Seitenverhältnisse wie 1:1, 4:3, 16:9 und 21:9, im Hoch- oder Querformat',
+        social:
+          'Fertige Formate für Instagram, YouTube, LinkedIn, Facebook und X mit passender Zielgröße',
+        exact: 'Exakte Maße und Position in Pixeln, dazu ein Drittel-Raster für die Bildaufteilung',
+        rotate: 'Drehen in 90°-Schritten, Spiegeln und Begradigen schiefer Horizonte',
+        formats: 'Speichern als JPG, PNG, WebP oder AVIF mit einstellbarer Qualität',
+        privacy: 'Metadaten wie Standort und Kamera werden beim Speichern entfernt',
+      },
+      moreTitle: 'Mehr erfahren',
+      more: 'Die {guide} erklärt jeden Schritt, die {faq} beantwortet Fragen zu Formaten und Datenschutz.',
+      guideLink: 'Anleitung',
+      faqLink: 'FAQ',
+    },
+    guide: {
+      intro:
+        'In fünf Schritten vom Originalbild zum fertigen Ausschnitt. Alles läuft lokal in Ihrem Browser.',
+      steps: {
+        load: {
+          title: 'Bild laden',
+          text: 'Ziehen Sie ein Bild auf die Ablagefläche, wählen Sie eine Datei aus oder fügen Sie ein Bild mit Strg+V ein. Unterstützt werden JPG, PNG, WebP, AVIF, GIF, BMP, ICO und SVG.',
+        },
+        ratio: {
+          title: 'Seitenverhältnis wählen',
+          text: 'Wählen Sie „Frei“ für einen beliebigen Ausschnitt oder ein festes Verhältnis. Mit „Hoch“ und „Quer“ wechseln Sie die Ausrichtung. Social-Media-Formate setzen zusätzlich die passende Ausgabegröße.',
+        },
+        frame: {
+          title: 'Rahmen anpassen',
+          text: 'Verschieben Sie den Rahmen mit der Maus oder dem Finger, ziehen Sie an den Griffen oder ziehen Sie auf dem Bild einen neuen Rahmen auf. Unter „Größe und Position“ geben Sie exakte Pixelwerte ein.',
+        },
+        rotate: {
+          title: 'Drehen und begradigen',
+          text: 'Drehen Sie das Bild in 90°-Schritten, spiegeln Sie es oder begradigen Sie es mit dem Regler. Der Rahmen bleibt dabei immer im Bild.',
+        },
+        export: {
+          title: 'Speichern',
+          text: 'Wählen Sie Dateiformat, Qualität und bei Bedarf eine eigene Ausgabegröße. „Herunterladen“ speichert den Ausschnitt auf Ihrem Gerät.',
+        },
+      },
+      keysTitle: 'Tastenkürzel',
+      keysIntro: 'Klicken Sie zuerst in den Rahmen oder wählen Sie ihn mit der Tabulatortaste aus.',
+      keys: {
+        move: { keys: 'Pfeiltasten', action: 'Rahmen um 1 % der Bildgröße verschieben' },
+        resize: { keys: 'Umschalt + Pfeiltasten', action: 'Rahmen vergrößern oder verkleinern' },
+        fine: { keys: 'Alt + Pfeiltasten', action: 'in 1-Pixel-Schritten arbeiten' },
+        coarse: { keys: 'Strg + Pfeiltasten', action: 'in 10-%-Schritten arbeiten' },
+        undo: { keys: 'Strg + Z', action: 'Rückgängig' },
+        redo: { keys: 'Strg + Umschalt + Z', action: 'Wiederholen' },
+        paste: { keys: 'Strg + V', action: 'Bild aus der Zwischenablage laden' },
+      },
+      keyColumn: 'Tasten',
+      actionColumn: 'Wirkung',
+    },
+    faq: {
+      intro: 'Antworten auf die häufigsten Fragen zum Bild-Zuschneider.',
+      items: {
+        upload: {
+          question: 'Wird mein Bild hochgeladen?',
+          answer:
+            'Nein. Das Bild wird ausschließlich in Ihrem Browser verarbeitet und nie an einen Server gesendet. Nach dem Schließen der Seite ist es nicht mehr im Speicher.',
+        },
+        formats: {
+          question: 'Welche Bildformate werden unterstützt?',
+          answer:
+            'Laden können Sie JPG, PNG, WebP, AVIF, GIF, BMP, ICO und SVG. Speichern können Sie als JPG, PNG, WebP und – sofern Ihr Browser es unterstützt – AVIF.',
+        },
+        heic: {
+          question: 'Warum lassen sich HEIC- oder TIFF-Bilder nicht öffnen?',
+          answer:
+            'Browser können diese Formate nicht selbst darstellen. Wandeln Sie das Bild zuerst um, zum Beispiel mit dem Bildkonverter von KodiniTools, und schneiden Sie es danach hier zu.',
+        },
+        quality: {
+          question: 'Verliert mein Bild beim Zuschneiden an Qualität?',
+          answer:
+            'Der Ausschnitt wird in voller Auflösung erstellt. Mit PNG bleibt er verlustfrei. Bei JPG, WebP und AVIF bestimmen Sie die Qualität mit dem Regler; 90 % und mehr sind kaum vom Original zu unterscheiden.',
+        },
+        metadata: {
+          question: 'Bleiben Standort und Kameradaten erhalten?',
+          answer:
+            'Nein. Beim Speichern entsteht eine neue Datei ohne Metadaten. Standort, Aufnahmezeit und Kameramodell sind darin nicht mehr enthalten. Die Ausrichtung aus den Kameradaten wird beim Laden berücksichtigt.',
+        },
+        social: {
+          question: 'Welche Größe brauche ich für Instagram, YouTube und Co.?',
+          answer:
+            'Wählen Sie unter „Social-Media-Format“ die Plattform. Der Bild-Zuschneider setzt das passende Seitenverhältnis und die empfohlene Ausgabegröße, etwa 1080 × 1350 Pixel für Instagram-Beiträge oder 1280 × 720 Pixel für YouTube-Thumbnails.',
+        },
+        straighten: {
+          question: 'Warum wird der Rahmen beim Begradigen kleiner?',
+          answer:
+            'Ein gedrehtes Bild hat schräge Kanten. Damit der Ausschnitt keine leeren Ecken enthält, verkleinert der Bild-Zuschneider den Rahmen automatisch. Drehen Sie zurück auf 0°, erhält er seine alte Größe.',
+        },
+        size: {
+          question: 'Wie groß darf ein Bild sein?',
+          answer:
+            'Dateien bis 100 MB und Bilder bis etwa 268 Megapixel. Die Grenze setzt der Browser; sehr große Bilder können je nach Gerät auch früher an den Arbeitsspeicher stoßen.',
+        },
+        gif: {
+          question: 'Funktionieren animierte GIFs?',
+          answer:
+            'Der Bild-Zuschneider bearbeitet Einzelbilder. Bei animierten GIFs wird das erste Bild verwendet.',
+        },
+        mobile: {
+          question: 'Kann ich den Bild-Zuschneider auf dem Smartphone nutzen?',
+          answer:
+            'Ja. Rahmen und Griffe lassen sich mit dem Finger bedienen, und das Bild wird direkt auf Ihrem Gerät gespeichert.',
+        },
+      },
+    },
+    about: {
+      intro:
+        'Der Bild-Zuschneider ist ein kostenloses Werkzeug von KodiniTools, einer Sammlung datenschutzfreundlicher Bild- und Audio-Werkzeuge.',
+      privacyTitle: 'Datenschutz',
+      privacy:
+        'Alle Berechnungen laufen in Ihrem Browser. Es werden keine Bilder hochgeladen, gespeichert oder ausgewertet. Gespeichert werden nur Ihre Einstellungen für Sprache, Farbschema und zuletzt verwendete Farben – lokal auf Ihrem Gerät.',
+      techTitle: 'Technik',
+      tech: 'Das Bild wird mit den Bildfunktionen des Browsers decodiert und auf einem Canvas in voller Auflösung zugeschnitten. Dadurch funktioniert der Bild-Zuschneider ohne Installation und ohne Server.',
+      moreTitle: 'Weitere Werkzeuge',
+      more: 'Bilder umwandeln, komprimieren und bearbeiten können Sie mit dem {converter}; mehrere Bilder auf einmal bearbeiten mit der {batch}.',
+      converterLink: 'Bildkonverter',
+      batchLink: 'Bilder-Batchbearbeitung',
+    },
+  },
   load: {
     title: 'Bild hier ablegen',
     text: 'oder Datei auswählen – auch Einfügen mit Strg+V funktioniert. JPG, PNG, WebP, AVIF, GIF, BMP, ICO und SVG.',
