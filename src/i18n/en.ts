@@ -250,6 +250,9 @@ const en: typeof de = {
       formatUnsupported: 'This browser cannot create the selected format.',
     },
   },
+  sidebar: {
+    label: 'Settings',
+  },
   history: {
     toolbar: 'History',
     ctrl: 'Ctrl',

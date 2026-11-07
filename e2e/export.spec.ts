@@ -67,3 +67,32 @@ test.describe('Export', () => {
     expect(file.name).toBe('photo-cropped.png');
   });
 });
+
+test.describe('Erreichbarkeit von „Herunterladen“', () => {
+  test('ab 900 px ohne Scrollen sichtbar, Seitenleiste scrollt in sich', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await prepare(page, 'de');
+    await page.goto('./');
+    await uploadImage(page, imageFile('foto.png', 1200, 800));
+    const button = page.getByRole('button', { name: 'Herunterladen' });
+    await expect(button).toBeInViewport();
+    const scroll = page.getByTestId('sidebar-scroll');
+    const overflow = await scroll.evaluate((el) => el.scrollHeight > el.clientHeight);
+    expect(overflow).toBe(true);
+    // Scrollen der Seitenleiste lässt den Button stehen
+    await scroll.evaluate((el) => el.scrollTo(0, el.scrollHeight));
+    await expect(button).toBeInViewport();
+    await expect(page.getByRole('heading', { name: 'Exportieren' })).toBeInViewport();
+  });
+
+  test('schmal (390 px): alles fließt untereinander', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await prepare(page, 'de');
+    await page.goto('./');
+    await uploadImage(page, imageFile('foto.png', 1200, 800));
+    const scroll = page.getByTestId('sidebar-scroll');
+    expect(await scroll.evaluate((el) => getComputedStyle(el).overflowY)).toBe('visible');
+    await page.getByRole('button', { name: 'Herunterladen' }).scrollIntoViewIfNeeded();
+    await expect(page.getByRole('button', { name: 'Herunterladen' })).toBeInViewport();
+  });
+});
