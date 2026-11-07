@@ -258,6 +258,16 @@ a {
   }
 }
 
+// Links im Fließtext nicht nur über die Farbe erkennbar (WCAG 1.4.1, Lighthouse
+// link-in-text-block); Navigation und Buttons sind davon nicht betroffen.
+p a,
+li a,
+td a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
 a:focus-visible,
 button:focus-visible,
 [role='button']:focus-visible,
