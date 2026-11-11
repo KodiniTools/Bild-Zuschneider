@@ -1,0 +1,4 @@
+# Shell-Skripte und nginx-Konfiguration laufen auf dem Linux-Server:
+# immer mit LF auschecken, auch unter Windows (core.autocrlf).
+*.sh   text eol=lf
+*.conf text eol=lf
